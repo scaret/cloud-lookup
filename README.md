@@ -11,7 +11,12 @@ const client = require('cloud-lookup').createClient({
         config: {
             accessKeyId: '<accessKeyId>',
             secretAccessKey: '<secretAccessKey>'        
-        }
+        },
+        vendor: 'aliyun',
+        config: {
+            accessKeyId: '<accessKeyId>',
+            accesskeySecret: '<secretAccessKey>'        
+        },
     }]
 });
 

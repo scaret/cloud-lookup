@@ -5,29 +5,54 @@ const LookupResult = function(records = []){
     this.records = records;
 };
 
-LookupResult.prototype.push = function(elem){
-    return this.records.push(elem);
-}
+const LookupResultRecord = function(Name, TTL, Identifier, Weight, ContinentCode, CountryCode, SubdivisionCode, Zone, Vendor, Account, Type, Values = []){
+    this.Name = Name;
+    this.TTL = TTL;
+    this.Identifier = Identifier;
+    this.Weight = Weight;
+    this.ContinentCode = ContinentCode;
+    this.CountryCode = CountryCode;
+    this.SubdivisionCode = SubdivisionCode;
+    this.Zone = Zone;
+    this.Vendor = Vendor;
+    this.Account = Account;
+    this.Type = Type;
+    this.Values = Values;
+};
 
 LookupResult.prototype.dump = function(filePath){
     const that = this;
-    const rows = [];
+    const rows = [[
+        "Name",
+        "TTL",
+        "Identifier",
+        "Weight",
+        "ContinentCode",
+        "CountryCode",
+        "SubdivisionCode",
+        "Zone",
+        "Vendor",
+        "Account",
+        "Type",
+        "Value"
+    ]];
     for (var recordId = 0; recordId < that.records.length; recordId++){
         var record = that.records[recordId];
         const row = [
             record.Name,
             record.TTL,
-            record.SetIdentifier || "",
-            record.GeoLocation && record.GeoLocation.ContinentCode || "",
-            record.GeoLocation && record.GeoLocation.CountryCode || "",
-            record.GeoLocation && record.GeoLocation.SubdivisionCode || "",
-            record.zone && record.zone.Id || "",
-            record.account && record.account.vendor || "",
-            record.account && record.account.config && record.account.config.accessKeyId || "",
+            record.Identifier || "",
+            record.Weight || "",
+            record.ContinentCode || "",
+            record.CountryCode || "",
+            record.SubdivisionCode || "",
+            record.Zone || "",
+            record.Vendor || "",
+            record.Account || "",
             record.Type,
         ];
-        record.ResourceRecords.forEach((resource)=>{
-            row.push(resource.Value);
+        record.Values.forEach((resource)=>{
+            row.push(resource);
         });
         rows.push(row);
     }
@@ -50,3 +75,4 @@ LookupResult.prototype.dump = function(filePath){
 };
 
 module.exports = LookupResult;
+module.exports.LookupResultRecord = LookupResultRecord;
